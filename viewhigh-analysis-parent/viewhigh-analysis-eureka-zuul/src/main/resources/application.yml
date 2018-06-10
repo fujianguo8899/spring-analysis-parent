@@ -1,0 +1,6 @@
+zuul:
+  routes:
+    analysisProvider: /zuul-provider/**
+    analysisConsumer: /zuul-consumer/**
+server:
+  port: 8000

@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+eureka:
+  # 心跳检测检测与续约时间
+  # 测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
+  server:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    name: analysisConsumer
+  redis:
+    host: 59.110.140.1
+    port: 6379
+    password: 2018qqq  
+    database: 0
+    pool:
+      max-active: 20
+      max-idle: 20
+      min-idle: 0
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

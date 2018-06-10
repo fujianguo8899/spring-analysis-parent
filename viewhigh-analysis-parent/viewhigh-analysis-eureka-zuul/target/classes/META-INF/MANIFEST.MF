@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: viewhigh-analysis-eureka-zuul
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Administrator
+Implementation-Vendor-Id: com.viewhigh
+Build-Jdk: 1.8.0_131
+Implementation-URL: http://projects.spring.io/spring-boot/viewhigh-ana
+ lysis-parent/viewhigh-analysis-eureka-zuul/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -25,9 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Producer;
-import com.viewhigh.analysis.domain.ApiResult;
 import com.viewhigh.analysis.domain.ErrorInfo;
 import com.viewhigh.analysis.domain.User;
+import com.viewhigh.analysis.eureka.consumer.runnable.RecordUserLogin;
 import com.viewhigh.analysis.eureka.consumer.service.LoginFeignClient;
 import com.viewhigh.analysis.eureka.consumer.utils.TokenUtil;
 import com.viewhigh.analysis.eureka.consumer.vo.UserVo;
@@ -39,6 +41,13 @@ public class LoginController {
 	public static final String CAPTCHAKEY = "captchaKey";
 	public static final Integer FAILCOUNTNUMBER = 3;
 
+	private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 
+																	   3, 
+																	   2, 
+																	   TimeUnit.MINUTES, 
+																	   new ArrayBlockingQueue<>(100), 
+																	   new ThreadPoolExecutor.DiscardPolicy());
+	
 	@Autowired
 	private TokenUtil tokenUtil;
 	
@@ -89,6 +98,10 @@ public class LoginController {
     	Map<String, Object> map = new HashMap<>();
         map.put("user", userVo);
         map.put("token", token);
+        
+        // 异步记录登录记录
+        executor.submit(new RecordUserLogin(user, loginFeignClient));
+        
         return map;
     }
     
@@ -147,7 +160,7 @@ public class LoginController {
 			Long failCountNumber = Long.valueOf(failCount);
 			String captchaCodeInRedis = strRedisTemplate.opsForValue().get(captchaKey);
 			if (!captchaValid(failCountNumber, captchaCode, captchaCodeInRedis)) {
-				throw new RuntimeException("验证码输入错误！");
+				throw new CheckedException(ErrorInfo.VERIFY_CODE_ERROR);
 			}
 		}
     	
@@ -192,7 +205,7 @@ public class LoginController {
      * @return
      */
 	@GetMapping(value = "/captcha-image")
-	public ApiResult<ModelAndView> getKaptchaImage(HttpServletRequest request,
+	public ModelAndView getKaptchaImage(HttpServletRequest request,
 										HttpServletResponse response) {
         String captchaKey = getSetCaptchaKeyByRequest(request, response);
 		response.setDateHeader("Expires", 0);

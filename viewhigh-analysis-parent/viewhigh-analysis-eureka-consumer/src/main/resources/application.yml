@@ -26,8 +26,10 @@ spring:
 ribbon:
   ReadTimeout: 60000
   ConnectTimeout: 60000
-  
+ 
 jwt:
   header: Authorization
   secret: viewhigh
   expiration: 7200
+  validate: 
+    path: /api

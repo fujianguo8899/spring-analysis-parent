@@ -7,17 +7,13 @@
 			a.id,
 			a.`name`,
 			a.`password`,
-			b.real_name AS realName,
-			b.mobile,
-			b.address,
-			b.age,
-			b.sex
+			a.real_name AS realName,
+			a.mobile,
+			a.address,
+			a.age,
+			a.sex
 		FROM
 			`user` a
-		LEFT JOIN
-			user_info b
-		ON
-			a.id = b.uid
 		WHERE
 			a.`name` = #{userName}
 	</select>

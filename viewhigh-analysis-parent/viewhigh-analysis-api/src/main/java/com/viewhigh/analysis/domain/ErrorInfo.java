@@ -6,7 +6,7 @@ public enum ErrorInfo {
 
 	TEST("1","test"),
     SUCCESS("200",""),
-    LOGIN_FAIL("101","登录失败"),
+    LOGIN_FAIL("101","用户名或密码错误"),
     USER_NOT_FOUND("102","未注册用户"),
     USER_DISABLED("103","无效用户"),
     LOGOUT_SUCCESS("104","登出成功"),

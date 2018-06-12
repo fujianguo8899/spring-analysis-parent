@@ -1,7 +1,11 @@
 package com.viewhigh.analysis.domain;
 
-public class User {
+import java.io.Serializable;
 
+public class User implements Serializable {
+
+	private static final long serialVersionUID = -6874527323607005183L;
+	
 	private Long id;
 	private String name;
 	private String password;
@@ -58,6 +62,7 @@ public class User {
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
+	
 	@Override
 	public String toString() {
 		return "UserVo [id=" + id + ", name=" + name + ", password=" + password + ", realName=" + realName

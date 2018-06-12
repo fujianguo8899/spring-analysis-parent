@@ -37,16 +37,16 @@ public class TokenUtil implements Serializable {
     private static final String ID_HASH_KEY = "id";
     private static final String USER_HASH_KEY = "user";
     private static final String TOKEN_HASH_KEY = "token";
-	
-	@Value("${jwt.secret}")
+
+    private static final BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<>(500);
+    private final transient ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 3, 2, TimeUnit.MINUTES, blockingQueue, new ThreadPoolExecutor.DiscardPolicy());
+    
+    @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration}")
     private Long expiration;
     
-    private static final BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<>(500);
-    private final transient ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 3, 2, TimeUnit.MINUTES, blockingQueue, new ThreadPoolExecutor.DiscardPolicy());
-	
 	@Autowired
 	private StringRedisTemplate strRedisTemplate;
 	

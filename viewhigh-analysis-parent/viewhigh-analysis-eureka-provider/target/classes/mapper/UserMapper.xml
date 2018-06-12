@@ -2,11 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.viewhigh.analysis.eureka.provider.mapper.UserMapper">
 
-	<select id="listUser" resultType="com.viewhigh.analysis.eureka.provider.domain.User">
-		select
-			*
-		from
-			account
+	<select id="getUserByName" resultType="com.viewhigh.analysis.domain.User">
+		SELECT
+			a.id,
+			a.`name`,
+			a.`password`,
+			b.real_name AS realName,
+			b.mobile,
+			b.address,
+			b.age,
+			b.sex
+		FROM
+			`user` a
+		LEFT JOIN
+			user_info b
+		ON
+			a.id = b.uid
+		WHERE
+			a.`name` = #{userName}
 	</select>
   	
 </mapper>

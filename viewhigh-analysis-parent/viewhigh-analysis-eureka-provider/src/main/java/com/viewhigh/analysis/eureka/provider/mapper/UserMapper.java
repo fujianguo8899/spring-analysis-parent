@@ -1,9 +1,7 @@
 package com.viewhigh.analysis.eureka.provider.mapper;
 
-import java.util.List;
-
-import com.viewhigh.analysis.eureka.provider.domain.User;
+import com.viewhigh.analysis.domain.User;
 
 public interface UserMapper {
-	List<User> listUser();
+	User getUserByName(String userName);
 }

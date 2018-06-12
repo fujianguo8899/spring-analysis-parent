@@ -12,6 +12,5 @@ public class UserTest {
 	
 	@Test
 	public void testListUser(){
-		loginService.login();
 	}
 }

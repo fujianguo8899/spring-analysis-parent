@@ -22,6 +22,10 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
             <version>1.4.4.RELEASE</version>
@@ -34,6 +38,16 @@
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-data-redis</artifactId>
   		</dependency>
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt</artifactId>
+   			<version>0.7.0</version>
+		</dependency>
+		<dependency>
+    		<groupId>com.github.penggle</groupId>
+    		<artifactId>kaptcha</artifactId>
+    		<version>2.3.2</version>
+		</dependency>
         
     </dependencies>
 </project>

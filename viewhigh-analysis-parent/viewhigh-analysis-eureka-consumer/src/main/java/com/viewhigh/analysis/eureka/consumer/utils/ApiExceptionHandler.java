@@ -14,7 +14,7 @@ import com.viewhigh.analysis.exception.CheckedException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-	  /**
+	/**
      * 默认异常处理方法,返回异常请求路径和异常信息
      */
     @ExceptionHandler(value = Exception.class)
@@ -22,6 +22,9 @@ public class ApiExceptionHandler {
         return ApiResult.errorResult(ErrorInfo.SYSTEM_ERROR);
     }
     
+    /**
+     * CheckedException异常的统一处理
+     */
 	@ExceptionHandler(CheckedException.class)
 	@ResponseBody
 	public ApiResult<Void> handleCheckedException(CheckedException ex) {

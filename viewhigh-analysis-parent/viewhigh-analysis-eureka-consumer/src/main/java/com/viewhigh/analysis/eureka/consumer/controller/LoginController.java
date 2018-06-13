@@ -17,12 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +31,7 @@ import com.viewhigh.analysis.domain.User;
 import com.viewhigh.analysis.eureka.consumer.runnable.RecordUserLogin;
 import com.viewhigh.analysis.eureka.consumer.service.LoginFeignClient;
 import com.viewhigh.analysis.eureka.consumer.utils.TokenUtil;
+import com.viewhigh.analysis.eureka.consumer.vo.LoginVo;
 import com.viewhigh.analysis.eureka.consumer.vo.UserVo;
 import com.viewhigh.analysis.exception.CheckedException;
 
@@ -70,18 +70,16 @@ public class LoginController {
     @PostMapping("/login")
     public Map<String, Object> login(HttpServletRequest request,
     								 HttpServletResponse response,
-    								 @NotBlank @RequestParam(value = "userName") String userName,
-    								 @NotBlank @RequestParam(value = "password") String password,
-    								 @RequestParam(value = "captchaCode", required = false) String captchaCode){
+    								 @RequestBody LoginVo loginVo){
     	// 获取20位的captchaKey， 如果没有就新增
     	String captchaKey = getSetCaptchaKeyByRequest(request, response);
     	// 根据查询登录失败次数,并校验验证码
-    	String captchaFailCountKey = validateCaptcha(captchaCode, captchaKey);
+    	String captchaFailCountKey = validateCaptcha(loginVo.getCaptchaCode(), captchaKey);
     	// service处理逻辑
     	User user;
     	try{
     		// 登陆成功删除redis中captchaKey和captchaFailCountKey
-    		user = loginFeignClient.login(userName, password);
+    		user = loginFeignClient.login(loginVo.getUserName(), loginVo.getPassword());
     		List<String> keys = new ArrayList<>();
     		keys.add(captchaKey);
     		keys.add(captchaFailCountKey);

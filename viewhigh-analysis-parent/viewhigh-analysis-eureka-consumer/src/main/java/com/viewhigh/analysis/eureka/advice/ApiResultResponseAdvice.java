@@ -11,7 +11,9 @@ import com.viewhigh.analysis.domain.ApiResult;
 
 
 public class ApiResultResponseAdvice implements ResponseBodyAdvice<Object> {
-
+	
+	// ResponseBodyAdvice 其作用是在响应体写出之前做一些处理；比如，修改返回值、加密等。
+	
 	@Override
 	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
 		return true;

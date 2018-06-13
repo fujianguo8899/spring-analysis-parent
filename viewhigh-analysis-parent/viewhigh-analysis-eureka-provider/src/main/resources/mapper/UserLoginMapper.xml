@@ -18,5 +18,16 @@
 			#{currentTime}
 		)
 	</select>
+	
+	<select id="countUserLogin" resultType="com.viewhigh.analysis.domain.UserLogin">
+		SELECT
+			uid AS id,
+			real_name AS realName,
+			COUNT(uid) AS loginCount
+		FROM
+			user_login
+		GROUP BY
+			uid
+	</select>
   	
 </mapper>

@@ -28,6 +28,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	static class ResponseAdvice extends ApiResultResponseAdvice {
 	}
 	
+	/**
+	 * 配置资源跨域过滤器
+	 * @return
+	 */
 	@Bean
 	public FilterRegistrationBean corsFilterRegistrationBean() {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
@@ -37,6 +41,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return registrationBean;
 	}
 	
+	/**
+	 * 配置token过滤器
+	 * @return
+	 */
 	@Bean
 	public FilterRegistrationBean tokenFilterRegistrationBean() {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();

@@ -14,4 +14,5 @@ public interface UserLoginMapper {
 	
 	// 统计用户登录次数
 	List<UserLogin> countUserLogin();
+	
 }

@@ -17,5 +17,13 @@
 		WHERE
 			a.`name` = #{userName}
 	</select>
+	
+	<select id="getUsers" resultType="com.viewhigh.analysis.domain.User">
+		SELECT
+			a.id,
+			a.real_name AS realName
+		FROM
+			`user` a
+	</select>
   	
 </mapper>

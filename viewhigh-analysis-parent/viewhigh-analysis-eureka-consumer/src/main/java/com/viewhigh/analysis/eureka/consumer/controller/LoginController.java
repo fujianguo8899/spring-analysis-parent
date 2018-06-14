@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,9 @@ public class LoginController {
 	
 	@Autowired
 	private StringRedisTemplate strRedisTemplate;
+	
+	@Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 	
     @Autowired
     private LoginFeignClient loginFeignClient;
@@ -98,7 +102,7 @@ public class LoginController {
         map.put("token", token);
         
         // 异步记录登录记录
-        executor.submit(new RecordUserLogin(user, loginFeignClient));
+        executor.submit(new RecordUserLogin(user, loginFeignClient, redisTemplate));
         
         return map;
     }

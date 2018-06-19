@@ -3,9 +3,12 @@ package com.viewhigh.analysis.eureka.provider.service;
 import com.viewhigh.analysis.api.ILoginService;
 import com.viewhigh.analysis.domain.ErrorInfo;
 import com.viewhigh.analysis.domain.User;
+import com.viewhigh.analysis.domain.UserPower;
 import com.viewhigh.analysis.eureka.provider.mapper.UserLoginMapper;
 import com.viewhigh.analysis.eureka.provider.mapper.UserMapper;
 import com.viewhigh.analysis.exception.CheckedException;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,12 @@ public class LoginService implements ILoginService {
 	public Integer recordUserLogin(@RequestBody User user) {
 		Integer login = userLoginMapper.recordUserLogin(user);
 		return login;
+	}
+
+	@Override
+	public List<UserPower> ListUserPower(Long id) {
+		List<UserPower> list = userLoginMapper.listUserPower(id);
+		return list;
 	}
 
     

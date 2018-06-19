@@ -22,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viewhigh.analysis.domain.ApiResult;
+import com.viewhigh.analysis.domain.ErrorInfo;
 import com.viewhigh.analysis.domain.RedisKey;
 import com.viewhigh.analysis.eureka.consumer.runnable.RecordUserLoginTime;
 import com.viewhigh.analysis.eureka.consumer.utils.TokenUtil;
@@ -47,7 +48,7 @@ public class TokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String authToken = getToken(request);
+		String authToken = tokenUtil.getToken(request);
 		if (tokenUtil.isTokenValid(authToken)) {
 			// 异步刷新token失效时间
 			tokenUtil.refreshToken(authToken);
@@ -62,7 +63,7 @@ public class TokenFilter extends OncePerRequestFilter {
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
 
 			ObjectMapper mapper = new ObjectMapper();
-			ApiResult<Void> result = ApiResult.errorResult("1001", "登录过期，请重新登录");
+			ApiResult<Void> result = ApiResult.errorResult(ErrorInfo.USER_TOKEN_OVER_TIME);
 			httpResponse.getWriter().write(mapper.writeValueAsString(result));
 			return;
 		}
@@ -70,35 +71,6 @@ public class TokenFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 		
 	}
-	
-	/**
-	 * 从request中获取token信息
-	 * @param request
-	 * @return
-	 */
-    private String getToken(HttpServletRequest request){
-    	String authToken="";
-    	
-    	//首先从headers中获取token信息
-    	authToken=request.getHeader(tokenHeader);
-    	if(authToken!=null&&!("".equals(authToken))){
-    		return authToken;
-    	}
-    	
-    	//从headers中没有获取到token信息，从cookie中获取
-    	Cookie[] cookies=request.getCookies();
-		if(cookies!=null){
-			for(int i=0;i<cookies.length;i++){
-				Cookie cookie=cookies[i];
-				if(tokenHeader.equals(cookie.getName())){
-					authToken=cookie.getValue();
-					break;
-				}
-			}
-		}
-		
-    	return authToken;
-    }
     
     /*
     private void updateLoginSum(Long uid) {

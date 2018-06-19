@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.viewhigh.analysis.eureka.advice.ApiResultResponseAdvice;
 import com.viewhigh.analysis.eureka.consumer.filter.CorsFilter;
+import com.viewhigh.analysis.eureka.consumer.filter.PowerFilter;
 import com.viewhigh.analysis.eureka.consumer.filter.TokenFilter;
 
 
@@ -51,12 +52,31 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registrationBean.setFilter(tokenFilter());
 		registrationBean.addUrlPatterns(validatePath + "/*");
 		registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
-		registrationBean.setOrder(4);
+		registrationBean.setOrder(2);
 		return registrationBean;
 	}
 	
 	@Bean
 	public Filter tokenFilter() {
 		return new TokenFilter();
+	}
+	
+	/**
+	 * 配置权限过滤器
+	 * @return
+	 */
+	@Bean
+	public FilterRegistrationBean powerFilterRegistrationBean() {
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(powerFilter());
+		registrationBean.addUrlPatterns(validatePath + "/*");
+		registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
+		registrationBean.setOrder(3);
+		return registrationBean;
+	}
+	
+	@Bean
+	public Filter powerFilter(){
+		return new PowerFilter();
 	}
 }

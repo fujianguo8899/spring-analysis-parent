@@ -23,7 +23,7 @@ public class RecordUserLoginTime implements Runnable {
 
 	@Override
 	public void run() {
-		synchronized (this) {
+//		synchronized (this) {
 			// 2.获取redis中上次登录的信息
 			String time  = (String) redisTemplate.opsForHash().get(RedisKey.USER_LONGIN.getKey() + uid.toString(), RedisKey.LOGIN_TIME.getKey());
 			String sum   = (String) redisTemplate.opsForHash().get(RedisKey.USER_LONGIN.getKey() + uid.toString(), RedisKey.LOGIN_SUM.getKey());
@@ -39,7 +39,7 @@ public class RecordUserLoginTime implements Runnable {
 			map.put(RedisKey.LOGIN_COUNT.getKey(), count);
 			map.put(RedisKey.LOGIN_SUM.getKey(), String.valueOf(nowSum + Long.valueOf(sum)));
 			redisTemplate.opsForHash().putAll(RedisKey.USER_LONGIN.getKey() + uid.toString(), map);
-		}
+//		}
 	}
 
 	

@@ -9,6 +9,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -46,6 +49,9 @@ public class TokenUtil implements Serializable {
 
     @Value("${jwt.expiration}")
     private Long expiration;
+    
+    @Value("${jwt.header}")
+	private String tokenHeader;
     
 	@Autowired
 	private StringRedisTemplate strRedisTemplate;
@@ -166,6 +172,35 @@ public class TokenUtil implements Serializable {
 				strRedisTemplate.expire(USER_KEY_PREFIX + uid, expiration, TimeUnit.SECONDS);
 			}
         }
+    }
+    
+	/**
+	 * 从request中获取token信息
+	 * @param request
+	 * @return
+	 */
+    public String getToken(HttpServletRequest request){
+    	String authToken="";
+    	
+    	//首先从headers中获取token信息
+    	authToken=request.getHeader(tokenHeader);
+    	if(authToken!=null&&!("".equals(authToken))){
+    		return authToken;
+    	}
+    	
+    	//从headers中没有获取到token信息，从cookie中获取
+    	Cookie[] cookies=request.getCookies();
+		if(cookies!=null){
+			for(int i=0;i<cookies.length;i++){
+				Cookie cookie=cookies[i];
+				if(tokenHeader.equals(cookie.getName())){
+					authToken=cookie.getValue();
+					break;
+				}
+			}
+		}
+		
+    	return authToken;
     }
 
 }

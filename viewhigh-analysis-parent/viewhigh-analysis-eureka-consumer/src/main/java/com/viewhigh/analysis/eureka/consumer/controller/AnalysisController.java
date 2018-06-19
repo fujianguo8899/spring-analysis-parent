@@ -25,7 +25,7 @@ public class AnalysisController {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 	
-	@GetMapping(value = "/userlogincount")
+	@GetMapping(value = "/analysis/logincount")
 	public List<UserLoginVo> countUserLogin(){
 //		List<UserLogin> countUserLogins = analysisFeignClient.countUserLogin();
 //		List<UserLoginVo> list = countUserLogins.stream().map(UserLoginVo::fromDoMain).collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class AnalysisController {
 		return list;
 	}
 	
-	@GetMapping(value = "/userlogintime")
+	@GetMapping(value = "/analysis/logintime")
 	public List<UserLoginTimeVo> userLoginTime(){
 		List<User> users = analysisFeignClient.users();
 		List<UserLoginTimeVo> list = new ArrayList<>();

@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.code.kaptcha.Producer;
 import com.viewhigh.analysis.domain.ErrorInfo;
 import com.viewhigh.analysis.domain.User;
+import com.viewhigh.analysis.domain.UserPower;
 import com.viewhigh.analysis.eureka.consumer.runnable.RecordUserLogin;
 import com.viewhigh.analysis.eureka.consumer.service.LoginFeignClient;
 import com.viewhigh.analysis.eureka.consumer.utils.TokenUtil;
@@ -100,6 +101,11 @@ public class LoginController {
     	Map<String, Object> map = new HashMap<>();
         map.put("user", userVo);
         map.put("token", token);
+        // 查询用户的角色并确定其权限
+        List<UserPower> userPowers = loginFeignClient.ListUserPower(user.getId());
+        map.put("roleId", userPowers.get(0).getrId());
+        map.put("roleName", userPowers.get(0).getRoleName());
+        strRedisTemplate.opsForValue().set("userRole:" + user.getId(), String.valueOf(userPowers.get(0).getrId()));
         
         // 异步记录登录记录
         executor.submit(new RecordUserLogin(user, loginFeignClient, redisTemplate));

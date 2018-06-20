@@ -10,6 +10,7 @@ public class UserVo implements Serializable {
 	
 	private Long id;
 	private String name;
+	private String password;
 	private String realName;
 	private String address;
 	private String mobile;
@@ -57,11 +58,18 @@ public class UserVo implements Serializable {
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 	public static UserVo fromDoMian(User user){
 		UserVo vo = new UserVo();
 		vo.setId(user.getId());
 		vo.setName(user.getName());
+		vo.setPassword(user.getPassword());
 		vo.setRealName(user.getRealName());
 		vo.setAddress(user.getAddress());
 		vo.setMobile(user.getMobile());
@@ -75,6 +83,19 @@ public class UserVo implements Serializable {
 	public String toString() {
 		return "UserVo [id=" + id + ", name=" + name + ", realName=" + realName
 				+ ", address=" + address + ", mobile=" + mobile + ", age=" + age + ", sex=" + sex + "]";
+	}
+	
+	public static User toDoMain(UserVo userVo){
+		User user = new User();
+		user.setId(userVo.getId());
+		user.setName(userVo.getName());
+		user.setPassword(userVo.getPassword());
+		user.setRealName(userVo.getRealName());
+		user.setAddress(userVo.getAddress());
+		user.setMobile(userVo.getMobile());
+		user.setAge(userVo.getAge());
+		user.setSex(userVo.getSex());
+		return user;
 	}
 	
 }

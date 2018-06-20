@@ -14,8 +14,108 @@
 			a.sex
 		FROM
 			`user` a
+		LEFT JOIN
+			user_info b
+		ON
+			a.id = b.uid
 		WHERE
 			a.`name` = #{userName}
 	</select>
   	
+  	<insert id="insertUser" parameterType="com.viewhigh.analysis.domain.User" useGeneratedKeys="true" keyProperty="id">
+    	insert into
+    	user
+    	(
+    		name, 
+    		password,
+    		real_name,
+    		address,
+    		mobile,
+    		age,
+    		sex
+    	)
+    	values 
+    	(
+    		#{user.name}, 
+    		#{user.password},
+    		#{user.realName},
+    		#{user.address},
+    		#{user.mobile},
+    		#{user.age},
+    		#{user.sex}
+     	 )
+  	</insert>
+ 	
+ 	<select id="countSexMale" resultType="java.lang.Integer">
+		SELECT
+			count(sex)
+		FROM
+			test.`user`
+		WHERE
+			sex = 1
+	</select>
+ 	
+ 	<select id="countSexFemale" resultType="java.lang.Integer">
+		SELECT
+			count(sex)
+		FROM
+			test.`user`
+		WHERE
+			sex = 0
+	</select>
+ 	
+ 	<select id="countAge020" resultType="java.lang.Integer">
+		SELECT
+			count(age)
+		FROM
+			test.`user`
+		WHERE
+			age &gt;= 0
+			AND
+			age &lt;= 20
+	</select>
+ 	
+ 	<select id="countAge2140" resultType="java.lang.Integer">
+		SELECT
+			count(age)
+		FROM
+			test.`user`
+		WHERE
+			age &gt;= 21
+			AND
+			age &lt;= 40
+	</select>
+ 	
+ 	<select id="countAge4160" resultType="java.lang.Integer">
+		SELECT
+			count(age)
+		FROM
+			test.`user`
+		WHERE
+			age &gt;= 41
+			AND
+			age &lt;= 60
+	</select>
+ 	
+ 	<select id="countAge6180" resultType="java.lang.Integer">
+		SELECT
+			count(age)
+		FROM
+			test.`user`
+		WHERE
+			age &gt;= 61
+			AND
+			age &lt;= 80
+	</select>
+ 	
+ 	<select id="countAge81100" resultType="java.lang.Integer">
+		SELECT
+			count(age)
+		FROM
+			test.`user`
+		WHERE
+			age &gt;= 81
+			AND
+			age &lt;= 100
+	</select>
 </mapper>

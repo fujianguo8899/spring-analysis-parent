@@ -1,7 +1,7 @@
 package com.viewhigh.analysis.eureka.provider.mapper;
 
 import org.apache.ibatis.annotations.Param;
-
+import java.util.List;
 import com.viewhigh.analysis.domain.User;
 
 public interface UserMapper {
@@ -14,4 +14,5 @@ public interface UserMapper {
 	int countAge4160();
 	int countAge6180();
 	int countAge81100();
+	List<User> getUsers();
 }

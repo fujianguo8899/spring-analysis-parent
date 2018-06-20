@@ -1,10 +1,13 @@
 package com.viewhigh.analysis.api;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.viewhigh.analysis.domain.User;
+import com.viewhigh.analysis.domain.UserPower;
 
 public interface ILoginService {
 	
@@ -25,4 +28,12 @@ public interface ILoginService {
 	 */
 	@RequestMapping(value = "/recordUserLogin", method = RequestMethod.POST)
 	Integer recordUserLogin(User user);
+	
+	/**
+	 * 获取用户权限
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/ListUserPower", method = RequestMethod.POST)
+	List<UserPower> ListUserPower(@RequestParam(value = "id") Long id);
 }

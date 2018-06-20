@@ -29,5 +29,30 @@
 		GROUP BY
 			uid
 	</select>
+	
+	<select id="listUserPower" resultType="com.viewhigh.analysis.domain.UserPower">
+		SELECT
+			ur.uid AS id, 
+			dp.power,
+			dp.degist,
+			r.id as rId,
+			r.role_name AS roleName
+		FROM
+			user_role ur
+		LEFT JOIN
+			role_power rp
+		ON
+			ur.rid = rp.rid
+		LEFT JOIN
+			dict_power dp
+		ON
+			rp.pid = dp.id
+		LEFT JOIN
+			role r
+		ON
+			rp.rid = r.id
+		WHERE
+			ur.uid = #{id}
+	</select>
   	
 </mapper>

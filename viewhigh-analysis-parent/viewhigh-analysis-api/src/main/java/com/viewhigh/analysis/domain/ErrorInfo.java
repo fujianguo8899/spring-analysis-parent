@@ -13,6 +13,8 @@ public enum ErrorInfo {
     NO_LOGIN("105","未登录"),
     VERIFY_CODE_ERROR("106","验证码错误"),
     VERIFY_REFRESH_CODE_ERROR("107","验证码刷新失败"),
+    USER_NOT_HAVE_POWER("108", "您没有相关权限"),
+    USER_TOKEN_OVER_TIME("109", "登录过期，请重新登录"),
     SYSTEM_ERROR("100","系统错误");
 
     private String code;

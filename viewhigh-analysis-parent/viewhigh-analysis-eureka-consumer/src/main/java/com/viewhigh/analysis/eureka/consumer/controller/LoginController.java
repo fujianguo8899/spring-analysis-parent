@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.code.kaptcha.Producer;
 import com.viewhigh.analysis.domain.ErrorInfo;
 import com.viewhigh.analysis.domain.User;
+import com.viewhigh.analysis.domain.UserPower;
 import com.viewhigh.analysis.eureka.consumer.runnable.RecordUserLogin;
 import com.viewhigh.analysis.eureka.consumer.service.LoginFeignClient;
 import com.viewhigh.analysis.eureka.consumer.utils.TokenUtil;
@@ -53,6 +55,9 @@ public class LoginController {
 	
 	@Autowired
 	private StringRedisTemplate strRedisTemplate;
+	
+	@Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 	
     @Autowired
     private LoginFeignClient loginFeignClient;
@@ -96,9 +101,14 @@ public class LoginController {
     	Map<String, Object> map = new HashMap<>();
         map.put("user", userVo);
         map.put("token", token);
+        // 查询用户的角色并确定其权限
+        List<UserPower> userPowers = loginFeignClient.ListUserPower(user.getId());
+        map.put("roleId", userPowers.get(0).getrId());
+        map.put("roleName", userPowers.get(0).getRoleName());
+        strRedisTemplate.opsForValue().set("userRole:" + user.getId(), String.valueOf(userPowers.get(0).getrId()));
         
         // 异步记录登录记录
-        executor.submit(new RecordUserLogin(user, loginFeignClient));
+        executor.submit(new RecordUserLogin(user, loginFeignClient, redisTemplate));
         
         return map;
     }
